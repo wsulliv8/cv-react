@@ -1,0 +1,82 @@
+.resume-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+  font-size: 0.8rem;
+}
+
+.resume {
+  display: grid;
+  grid-template: 1fr 8fr / 1fr 2.5fr;
+  grid-template-areas:
+    "header   header"
+    "sidebar  body";
+  height: 97%;
+  aspect-ratio: 8.5 / 11;
+  border: black solid;
+  background-color: white;
+}
+
+.flex-contents {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 5px;
+}
+
+.header {
+  grid-area: header;
+  gap: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: #234ca7;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  justify-content: flex-start;
+  gap: 15px;
+  background-color: #a7a7a7;
+  padding-top: 20px;
+}
+
+.sidebar > section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.sidebar h3 {
+  align-self: center;
+}
+
+.resume-body {
+  grid-area: body;
+}
+
+.resume-body > h2 {
+  margin: 0 auto;
+}
+
+.work-experience {
+  display: grid;
+  grid-template: max-content max-content / 1fr 1fr;
+  grid-template-areas:
+    "company-position  location-timeline"
+    "description        description";
+}
+
+.work-experience:first-of-type(div) {
+  grid-area: company-position;
+  text-align: center;
+}
+
+.work-experience:last-of-type(div) {
+  grid-area: location-timeline;
+}
+
+.work-experience > p {
+  grid-area: description;
+}

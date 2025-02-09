@@ -1,0 +1,82 @@
+.input-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 30px;
+  width: 500px;
+  height: 97%;
+}
+
+.inputCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  height: max-content;
+  padding: 10px 0 40px 0;
+  border: black solid;
+  background-color: white;
+}
+
+.collapse {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  width: max-content;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transform: translateX(-50%);
+}
+
+.collapse > img {
+  background: none;
+  fill: none;
+  width: 20px;
+
+  &.active {
+    transform: rotate(0);
+  }
+
+  &.inactive {
+    transform: rotate(180deg);
+  }
+}
+
+.inputCard > button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.inputCard > div {
+  width: 70%;
+
+  &.expand {
+    display: block;
+  }
+
+  &.contract {
+    display: none;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+fieldset {
+  display: contents;
+}
+
+input {
+  margin-bottom: 5px;
+}
