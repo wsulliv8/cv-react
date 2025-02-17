@@ -14,6 +14,15 @@
   height: 97%;
 }
 
+.savedCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 40px;
+  border: black solid;
+}
+
 .inputCard {
   display: flex;
   flex-direction: column;
@@ -58,19 +67,12 @@
 
 .inputCard > div {
   width: 70%;
-
-  &.expand {
-    display: block;
-  }
-
-  &.contract {
-    display: none;
-  }
 }
 
 form {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 fieldset {

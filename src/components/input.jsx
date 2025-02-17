@@ -19,6 +19,7 @@ export default function Input({ onChange, general, education, workHistory }) {
           activeId={activeId}
           onClick={collapse}
           title={"General Information"}
+          formData={general}
         >
           <General onChange={onChange} general={general} />
         </InputCard>
@@ -27,6 +28,7 @@ export default function Input({ onChange, general, education, workHistory }) {
           activeId={activeId}
           onClick={collapse}
           title={"Education"}
+          formData={education}
         >
           <Education onChange={onChange} education={education} />
         </InputCard>
@@ -34,7 +36,8 @@ export default function Input({ onChange, general, education, workHistory }) {
           id={2}
           activeId={activeId}
           onClick={collapse}
-          title={"Work History"}
+          title={"Experience"}
+          formData={general}
         >
           <Practical onChange={onChange} workHistory={workHistory} />
         </InputCard>
@@ -43,25 +46,43 @@ export default function Input({ onChange, general, education, workHistory }) {
   );
 }
 
-function InputCard({ children, id, activeId, onClick, title }) {
+function SavedCard({ formData, changeStatus }) {
+  return (
+    <>
+      <p>{Object.entries(formData)[0][1]}</p>
+      <button onClick={changeStatus}>Edit</button>
+    </>
+  );
+}
+
+function InputCard({ children, id, activeId, onClick, title, formData }) {
   const [isSaved, setSaved] = useState(false);
 
-  function saveCard(e) {
-    setSaved(true);
+  function changeStatus(e) {
+    setSaved(!isSaved);
   }
 
   return (
     <div className="inputCard">
       <h2>{title}</h2>
-      {!isSaved && (
-        <div className={id === activeId ? "expand" : "contract"}>
-          {children}
+      {isSaved && id === activeId && (
+        <div className="savedCard">
+          <SavedCard
+            formData={formData}
+            changeStatus={changeStatus}
+          ></SavedCard>
         </div>
       )}
 
-      <button type="button" onClick={saveCard}>
-        Save
-      </button>
+      {!isSaved && id === activeId && (
+        <>
+          <div>{children}</div>
+          <button type="button" onClick={changeStatus}>
+            Save
+          </button>
+        </>
+      )}
+
       <button className="collapse" onClick={() => onClick(id)}>
         <img
           className={id === activeId ? "active" : "inactive"}
@@ -69,6 +90,9 @@ function InputCard({ children, id, activeId, onClick, title }) {
           alt="triangle"
         />
       </button>
+      {title !== "General Information" && isSaved && id === activeId && (
+        <button onClick={changeStatus}>Add {title}</button>
+      )}
     </div>
   );
 }
