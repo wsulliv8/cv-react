@@ -11,16 +11,14 @@ export default function Input({
   experience,
 }) {
   const [activeId, setActiveId] = useState(0);
-  const [educationList, setEducationList] = useState([[0, true]]);
 
   function collapse(id) {
     if (id === activeId) setActiveId(null);
     else setActiveId(id);
   }
 
-  function addCard() {
-    setEducationList([...educationList, [educationList.length, true]]);
-    addResumeData("education");
+  function addCard(title) {
+    addResumeData(title.toLowerCase());
   }
   return (
     <div className="input-wrapper">
@@ -32,12 +30,7 @@ export default function Input({
           title={"General Information"}
           addCard={addCard}
         >
-          <General
-            key={0}
-            onChange={onChange}
-            resumeData={general}
-            show={true}
-          />
+          <General key={0} onChange={onChange} resumeData={general} />
         </InputCard>
         <InputCard
           id={1}
@@ -46,22 +39,12 @@ export default function Input({
           title={"Education"}
           addCard={addCard}
         >
-          {/*           {educationList.map((item) => (
-            <Education
-              key={item[0]}
-              id={item[0]}
-              onChange={onChange}
-              resumeData={education[item[0]]}
-              show={item[1]}
-            />
-          ))} */}
           {education.map((item, index) => (
             <Education
               key={index}
               id={index}
               onChange={onChange}
               resumeData={item}
-              show={true}
             />
           ))}
         </InputCard>
@@ -72,24 +55,17 @@ export default function Input({
           title={"Experience"}
           addCard={addCard}
         >
-          <Practical
-            key={0}
-            onChange={onChange}
-            resumeData={experience}
-            show={true}
-          />
+          {experience.map((item, index) => (
+            <Experience
+              key={index}
+              id={index}
+              onChange={onChange}
+              resumeData={item}
+            />
+          ))}
         </InputCard>
       </div>
     </div>
-  );
-}
-
-function SavedCard({ formData, changeStatus }) {
-  return (
-    <>
-      <p>{Object.entries(formData)[0][1]}</p>
-      <button onClick={changeStatus}>Edit</button>
-    </>
   );
 }
 
@@ -142,7 +118,7 @@ function InputCard({ children, id, activeId, onClick, title, addCard }) {
       {title !== "General Information" && isSaved && id === activeId && (
         <button
           onClick={() => {
-            addCard();
+            addCard(title);
             changeStatus();
           }}
         >
@@ -155,60 +131,58 @@ function InputCard({ children, id, activeId, onClick, title, addCard }) {
 
 function General({ onChange, resumeData }) {
   return (
-    <>
-      <form action="">
-        <fieldset>
-          <label htmlFor="name">Name: </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            onChange={onChange}
-            value={resumeData.name}
-          />
-          <label htmlFor="position">Position</label>
-          <input
-            type="text"
-            id="position"
-            name="position"
-            onChange={onChange}
-            value={resumeData.position}
-          />
-          <label htmlFor="email">Email: </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            onChange={onChange}
-            value={resumeData.email}
-          />
-          <label htmlFor="phone">Phone Number: </label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            onChange={onChange}
-            value={resumeData.phone}
-          />
-          <label htmlFor="home">Location: </label>
-          <input
-            type="text"
-            id="home"
-            name="home"
-            onChange={onChange}
-            value={resumeData.location}
-          />
-          <label htmlFor="linkedin">Linkedin: </label>
-          <input
-            type="url"
-            id="linkedin"
-            name="linkedin"
-            onChange={onChange}
-            value={resumeData.linkedin}
-          />
-        </fieldset>
-      </form>
-    </>
+    <form action="">
+      <fieldset>
+        <label htmlFor="name">Name: </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          onChange={onChange}
+          value={resumeData.name}
+        />
+        <label htmlFor="title">Title</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          onChange={onChange}
+          value={resumeData.title}
+        />
+        <label htmlFor="email">Email: </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          onChange={onChange}
+          value={resumeData.email}
+        />
+        <label htmlFor="phone">Phone Number: </label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          onChange={onChange}
+          value={resumeData.phone}
+        />
+        <label htmlFor="home">Location: </label>
+        <input
+          type="text"
+          id="home"
+          name="home"
+          onChange={onChange}
+          value={resumeData.location}
+        />
+        <label htmlFor="linkedin">Linkedin: </label>
+        <input
+          type="url"
+          id="linkedin"
+          name="linkedin"
+          onChange={onChange}
+          value={resumeData.linkedin}
+        />
+      </fieldset>
+    </form>
   );
 }
 
@@ -259,6 +233,56 @@ function Education({ id, onChange, resumeData }) {
   );
 }
 
-function Practical() {
-  return <h2>Work History</h2>;
+function Experience({ id, onChange, resumeData }) {
+  return (
+    <form action="">
+      <label htmlFor={useId()}>Company</label>
+      <input
+        type="text"
+        id={useId()}
+        name="company"
+        onChange={(e) => onChange(e, id)}
+        value={resumeData.company}
+      />
+      <label htmlFor={useId()}>Location</label>
+      <input
+        type="text"
+        id={useId()}
+        name="companyLocation"
+        onChange={(e) => onChange(e, id)}
+        value={resumeData.companyLocation}
+      />
+      <label htmlFor={useId()}>Position</label>
+      <input
+        type="text"
+        id={useId()}
+        name="position"
+        onChange={(e) => onChange(e, id)}
+        value={resumeData.position}
+      />
+      <label htmlFor={useId()}>Bullets</label>
+      <textarea
+        id={useId()}
+        name="bullets"
+        onChange={(e) => onChange(e, id)}
+        value={resumeData.bullets}
+      />
+      <label htmlFor={useId()}>Start Date</label>
+      <input
+        type="date"
+        id={useId()}
+        name="workStartDate"
+        onChange={(e) => onChange(e, id)}
+        value={resumeData.workStartDate}
+      />
+      <label htmlFor={useId()}>End Date</label>
+      <input
+        type="date"
+        id={useId()}
+        name="workEndDate"
+        onChange={(e) => onChange(e, id)}
+        value={resumeData.workEndDate}
+      />
+    </form>
+  );
 }

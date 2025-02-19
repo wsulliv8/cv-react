@@ -1,6 +1,6 @@
 export const generalData = {
   name: "Jane Doe",
-  position: "Software Engineer",
+  title: "Software Engineer",
   email: "meow@cat.com",
   phone: "111-222-3333",
   home: "Silent Hill, Japan",
@@ -19,7 +19,7 @@ export const educationData = [
   },
 ];
 
-export const experience = [
+export const experienceData = [
   {
     company: "Microsoft",
     companyLocation: "Bellevue, Washington",
@@ -32,8 +32,8 @@ export const experience = [
       `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
     ],
-    startDate: "08/2016",
-    endDate: "05/2020",
+    workStartDate: "08/2016",
+    workEndDate: "05/2020",
     active: true,
   },
 ];
@@ -41,7 +41,7 @@ export const experience = [
 export const templates = {
   general: {
     name: "",
-    position: "",
+    title: "",
     email: "",
     phone: "",
     home: "",
@@ -61,8 +61,8 @@ export const templates = {
     companyLocation: "",
     position: "",
     bullets: [],
-    startDate: "",
-    endDate: "",
+    workStartDate: "",
+    workEndDate: "",
     active: true,
   },
 };
