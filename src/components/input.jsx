@@ -1,16 +1,27 @@
 /* eslint-disable react/prop-types */
-import { act, useState, Children } from "react";
+import { useState, useId } from "react";
 import toggleCollapse from "../assets/triangle.svg";
 import "./input.css";
 
-export default function Input({ onChange, general, education, workHistory }) {
+export default function Input({
+  addResumeData,
+  onChange,
+  general,
+  education,
+  experience,
+}) {
   const [activeId, setActiveId] = useState(0);
+  const [educationList, setEducationList] = useState([[0, true]]);
 
   function collapse(id) {
     if (id === activeId) setActiveId(null);
     else setActiveId(id);
   }
 
+  function addCard() {
+    setEducationList([...educationList, [educationList.length, true]]);
+    addResumeData("education");
+  }
   return (
     <div className="input-wrapper">
       <div className="input">
@@ -19,27 +30,54 @@ export default function Input({ onChange, general, education, workHistory }) {
           activeId={activeId}
           onClick={collapse}
           title={"General Information"}
-          formData={general}
+          addCard={addCard}
         >
-          <General onChange={onChange} general={general} />
+          <General
+            key={0}
+            onChange={onChange}
+            resumeData={general}
+            show={true}
+          />
         </InputCard>
         <InputCard
           id={1}
           activeId={activeId}
           onClick={collapse}
           title={"Education"}
-          formData={education}
+          addCard={addCard}
         >
-          <Education onChange={onChange} education={education} />
+          {/*           {educationList.map((item) => (
+            <Education
+              key={item[0]}
+              id={item[0]}
+              onChange={onChange}
+              resumeData={education[item[0]]}
+              show={item[1]}
+            />
+          ))} */}
+          {education.map((item, index) => (
+            <Education
+              key={index}
+              id={index}
+              onChange={onChange}
+              resumeData={item}
+              show={true}
+            />
+          ))}
         </InputCard>
         <InputCard
           id={2}
           activeId={activeId}
           onClick={collapse}
           title={"Experience"}
-          formData={general}
+          addCard={addCard}
         >
-          <Practical onChange={onChange} workHistory={workHistory} />
+          <Practical
+            key={0}
+            onChange={onChange}
+            resumeData={experience}
+            show={true}
+          />
         </InputCard>
       </div>
     </div>
@@ -55,8 +93,13 @@ function SavedCard({ formData, changeStatus }) {
   );
 }
 
-function InputCard({ children, id, activeId, onClick, title, formData }) {
+function InputCard({ children, id, activeId, onClick, title, addCard }) {
   const [isSaved, setSaved] = useState(false);
+
+  if (title == "Education") console.log(children);
+  const filteredChildren = (
+    Array.isArray(children) ? children : [children]
+  ).filter((child) => child.props.resumeData.active);
 
   function changeStatus(e) {
     setSaved(!isSaved);
@@ -65,18 +108,24 @@ function InputCard({ children, id, activeId, onClick, title, formData }) {
   return (
     <div className="inputCard">
       <h2>{title}</h2>
-      {isSaved && id === activeId && (
-        <div className="savedCard">
+      {isSaved &&
+        id === activeId &&
+        /*         <div className="savedCard">
           <SavedCard
             formData={formData}
             changeStatus={changeStatus}
           ></SavedCard>
-        </div>
-      )}
+        </div> */
+        (Array.isArray(children) ? children : [children]).map((child, i) => (
+          <div key={i} className="savedCard">
+            <p>{Object.entries(child.props.resumeData)[0][1]}</p>
+            <button onClick={changeStatus}>Edit</button>
+          </div>
+        ))}
 
       {!isSaved && id === activeId && (
         <>
-          <div>{children}</div>
+          <div>{filteredChildren}</div>
           <button type="button" onClick={changeStatus}>
             Save
           </button>
@@ -91,13 +140,20 @@ function InputCard({ children, id, activeId, onClick, title, formData }) {
         />
       </button>
       {title !== "General Information" && isSaved && id === activeId && (
-        <button onClick={changeStatus}>Add {title}</button>
+        <button
+          onClick={() => {
+            addCard();
+            changeStatus();
+          }}
+        >
+          Add {title}
+        </button>
       )}
     </div>
   );
 }
 
-function General({ onChange, general }) {
+function General({ onChange, resumeData }) {
   return (
     <>
       <form action="">
@@ -106,43 +162,49 @@ function General({ onChange, general }) {
           <input
             type="text"
             id="name"
+            name="name"
             onChange={onChange}
-            value={general.name}
+            value={resumeData.name}
           />
           <label htmlFor="position">Position</label>
           <input
             type="text"
             id="position"
+            name="position"
             onChange={onChange}
-            value={general.position}
+            value={resumeData.position}
           />
           <label htmlFor="email">Email: </label>
           <input
             type="email"
             id="email"
+            name="email"
             onChange={onChange}
-            value={general.email}
+            value={resumeData.email}
           />
           <label htmlFor="phone">Phone Number: </label>
           <input
             type="tel"
             id="phone"
+            name="phone"
             onChange={onChange}
-            value={general.phone}
+            value={resumeData.phone}
           />
-          <label htmlFor="location">Location: </label>
+          <label htmlFor="home">Location: </label>
           <input
             type="text"
-            id="location"
+            id="home"
+            name="home"
             onChange={onChange}
-            value={general.location}
+            value={resumeData.location}
           />
           <label htmlFor="linkedin">Linkedin: </label>
           <input
             type="url"
             id="linkedin"
+            name="linkedin"
             onChange={onChange}
-            value={general.linkedin}
+            value={resumeData.linkedin}
           />
         </fieldset>
       </form>
@@ -150,47 +212,50 @@ function General({ onChange, general }) {
   );
 }
 
-function Education({ onChange, education }) {
+function Education({ id, onChange, resumeData }) {
   return (
-    <>
-      <form action="">
-        <label htmlFor="school">School</label>
-        <input
-          type="text"
-          id="school"
-          onChange={onChange}
-          value={education.school}
-        />
-        <label htmlFor="location">Location</label>
-        <input
-          type="text"
-          id="location"
-          onChange={onChange}
-          value={education.location}
-        />
-        <label htmlFor="degree">Degree</label>
-        <input
-          type="text"
-          id="degree"
-          onChange={onChange}
-          value={education.degree}
-        />
-        <label htmlFor="startDate">Start Date</label>
-        <input
-          type="date"
-          id="startDate"
-          onChange={onChange}
-          value={education.startDate}
-        />
-        <label htmlFor="endDate">End Date</label>
-        <input
-          type="date"
-          id="endDate"
-          onChange={onChange}
-          value={education.endDate}
-        />
-      </form>
-    </>
+    <form action="">
+      <label htmlFor={useId()}>School</label>
+      <input
+        type="text"
+        id={useId()}
+        name="school"
+        onChange={(e) => onChange(e, id)}
+        value={resumeData.school}
+      />
+      <label htmlFor={useId()}>Location</label>
+      <input
+        type="text"
+        id={useId()}
+        name="location"
+        onChange={(e) => onChange(e, id)}
+        value={resumeData.location}
+      />
+      <label htmlFor={useId()}>Degree</label>
+      <input
+        type="text"
+        id={useId()}
+        name="degree"
+        onChange={(e) => onChange(e, id)}
+        value={resumeData.degree}
+      />
+      <label htmlFor={useId()}>Start Date</label>
+      <input
+        type="date"
+        id={useId()}
+        name="startDate"
+        onChange={(e) => onChange(e, id)}
+        value={resumeData.startDate}
+      />
+      <label htmlFor={useId()}>End Date</label>
+      <input
+        type="date"
+        id={useId()}
+        name="endDate"
+        onChange={(e) => onChange(e, id)}
+        value={resumeData.endDate}
+      />
+    </form>
   );
 }
 

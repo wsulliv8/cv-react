@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useId } from "react";
 import "./resume.css";
 
 export default function Resume({ general, education }) {
@@ -15,26 +15,19 @@ export default function Resume({ general, education }) {
           <section>
             <a href="">{general.email}</a>
             <p>{general.phone}</p>
-            <p>{general.location}</p>
+            <p>{general.home}</p>
             <a href={general.linkedin}>Linkedin</a>
             <section className="contact"></section>
           </section>
           <h3>Education</h3>
-          <section className="education">
-            <h4>{education.school}</h4>
-            <p>
-              <i>{education.location}</i>
-            </p>
-            <p>
-              <i>{education.degree}</i>
-            </p>
-            <p>
-              <i>{education.startDate}</i>
-            </p>
-            <p>
-              <i>{education.endDate}</i>
-            </p>
-          </section>
+          {education.map((item, index) => {
+            return (
+              <EducationSection
+                key={index}
+                education={education[index]}
+              ></EducationSection>
+            );
+          })}
           <h3>Skills</h3>
           <section className="skills"></section>
         </div>
@@ -73,5 +66,25 @@ export default function Resume({ general, education }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function EducationSection({ education }) {
+  return (
+    <section className="education">
+      <h4>{education.school}</h4>
+      <p>
+        <i>{education.location}</i>
+      </p>
+      <p>
+        <i>{education.degree}</i>
+      </p>
+      <p>
+        <i>{education.startDate}</i>
+      </p>
+      <p>
+        <i>{education.endDate}</i>
+      </p>
+    </section>
   );
 }
