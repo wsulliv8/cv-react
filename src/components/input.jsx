@@ -9,6 +9,7 @@ export default function Input({
   general,
   education,
   experience,
+  project,
 }) {
   const [activeId, setActiveId] = useState(0);
 
@@ -64,6 +65,22 @@ export default function Input({
             />
           ))}
         </InputCard>
+        <InputCard
+          id={3}
+          activeId={activeId}
+          onClick={collapse}
+          title={"Projects"}
+          addCard={addCard}
+        >
+          {project.map((item, index) => (
+            <Project
+              key={index}
+              id={index}
+              onChange={onChange}
+              resumeData={item}
+            />
+          ))}
+        </InputCard>
       </div>
     </div>
   );
@@ -72,7 +89,6 @@ export default function Input({
 function InputCard({ children, id, activeId, onClick, title, addCard }) {
   const [isSaved, setSaved] = useState(false);
 
-  if (title == "Education") console.log(children);
   const filteredChildren = (
     Array.isArray(children) ? children : [children]
   ).filter((child) => child.props.resumeData.active);
@@ -282,6 +298,28 @@ function Experience({ id, onChange, resumeData }) {
         name="workEndDate"
         onChange={(e) => onChange(e, id)}
         value={resumeData.workEndDate}
+      />
+    </form>
+  );
+}
+
+function Project({ id, onChange, resumeData }) {
+  return (
+    <form action="">
+      <label htmlFor={useId()}>Project</label>
+      <input
+        type="text"
+        id={useId()}
+        name="project"
+        onChange={(e) => onChange(e, id)}
+        value={resumeData.project}
+      />
+      <label htmlFor={useId()}>Bullets</label>
+      <textarea
+        id={useId()}
+        name="description"
+        onChange={(e) => onChange(e, id)}
+        value={resumeData.description}
       />
     </form>
   );

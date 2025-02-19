@@ -77,6 +77,8 @@
   grid-area: location-timeline;
 }
 
-.work-experience > p {
+.work-experience > ul {
   grid-area: description;
+  list-style-type: disc;
+  padding-left: 15px;
 }

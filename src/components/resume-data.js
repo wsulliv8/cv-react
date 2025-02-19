@@ -24,20 +24,26 @@ export const experienceData = [
     company: "Microsoft",
     companyLocation: "Bellevue, Washington",
     position: "Software Engineer",
-    bullets: [
-      `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    bullets: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
               enim ad minim veniam, quis nostrud exercitation ullamco laboris
               nisi ut aliquip ex ea commodo consequat.`,
-      `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
-    ],
     workStartDate: "08/2016",
     workEndDate: "05/2020",
     active: true,
   },
 ];
 
+export const projectData = [
+  {
+    project: "Resume Builder",
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.`,
+    active: true,
+  },
+];
 export const templates = {
   general: {
     name: "",
@@ -60,9 +66,14 @@ export const templates = {
     company: "",
     companyLocation: "",
     position: "",
-    bullets: [],
+    bullets: "",
     workStartDate: "",
     workEndDate: "",
+    active: true,
+  },
+  project: {
+    project: "",
+    description: "",
     active: true,
   },
 };

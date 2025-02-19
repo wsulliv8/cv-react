@@ -2,7 +2,7 @@
 import { useState, useId } from "react";
 import "./resume.css";
 
-export default function Resume({ general, education, experience }) {
+export default function Resume({ general, education, experience, project }) {
   return (
     <div className="resume-wrapper">
       <div className="resume">
@@ -37,22 +37,14 @@ export default function Resume({ general, education, experience }) {
             return (
               <ExperienceSection
                 key={index}
-                experience={experience[index]}
+                experience={item}
               ></ExperienceSection>
             );
           })}
           <h2>Projects</h2>
-          <section className="projects">
-            <h3>Resume Builder</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur.
-            </p>
-          </section>
+          {project.map((item, index) => {
+            return <ProjectSection key={index} project={item}></ProjectSection>;
+          })}
         </div>
       </div>
     </div>
@@ -80,6 +72,10 @@ function EducationSection({ education }) {
 }
 
 function ExperienceSection({ experience }) {
+  function createBullets(str) {
+    return str ? str.split("\n") : [];
+  }
+
   return (
     <section className="work-experience">
       <div>
@@ -92,7 +88,30 @@ function ExperienceSection({ experience }) {
           {experience.workStartDate} - {experience.workEndDate}
         </h5>
       </div>
-      <p>{experience.bullets}</p>
+      <ul>
+        {createBullets(experience.bullets).map((bullet, index) => (
+          <li key={`${bullet}-${index}`}>{bullet} </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function ProjectSection({ project }) {
+  function createBullets(str) {
+    return str ? str.split("\n") : [];
+  }
+
+  return (
+    <section className="work-experience">
+      <div>
+        <h3>{project.project}</h3>
+      </div>
+      <ul>
+        {createBullets(project.description).map((bullet, index) => (
+          <li key={`${bullet}-${index}`}>{bullet} </li>
+        ))}
+      </ul>
     </section>
   );
 }

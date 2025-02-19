@@ -48,10 +48,6 @@ ul {
   padding: 0;
 }
 
-li {
-  list-style-type: none;
-}
-
 p {
   text-wrap: pretty;
 }
