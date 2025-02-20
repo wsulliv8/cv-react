@@ -6,6 +6,7 @@ export const generalData = {
   home: "Silent Hill, Japan",
   linkedin: "https://www.linkedin.com/",
   active: true,
+  id: 0,
 };
 
 export const educationData = [
@@ -16,6 +17,7 @@ export const educationData = [
     startDate: "08/2016",
     endDate: "05/2020",
     active: true,
+    id: 0,
   },
 ];
 
@@ -31,6 +33,7 @@ export const experienceData = [
     workStartDate: "08/2016",
     workEndDate: "05/2020",
     active: true,
+    id: 0,
   },
 ];
 
@@ -42,6 +45,7 @@ export const projectData = [
               enim ad minim veniam, quis nostrud exercitation ullamco laboris
               nisi ut aliquip ex ea commodo consequat.`,
     active: true,
+    id: 0,
   },
 ];
 export const templates = {
@@ -53,6 +57,7 @@ export const templates = {
     home: "",
     linkedin: "",
     active: true,
+    id: 0,
   },
   education: {
     school: "",
@@ -61,6 +66,7 @@ export const templates = {
     startDate: "",
     endDate: "",
     active: true,
+    id: 0,
   },
   experience: {
     company: "",
@@ -70,10 +76,12 @@ export const templates = {
     workStartDate: "",
     workEndDate: "",
     active: true,
+    id: 0,
   },
   project: {
     project: "",
     description: "",
     active: true,
+    id: 0,
   },
 };

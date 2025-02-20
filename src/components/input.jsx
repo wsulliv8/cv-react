@@ -5,7 +5,9 @@ import "./input.css";
 
 export default function Input({
   addResumeData,
+  deleteResumeData,
   onChange,
+  toggleActive,
   general,
   education,
   experience,
@@ -13,7 +15,7 @@ export default function Input({
 }) {
   const [activeId, setActiveId] = useState(0);
 
-  function collapse(id) {
+  function changeActiveId(id) {
     if (id === activeId) setActiveId(null);
     else setActiveId(id);
   }
@@ -27,23 +29,27 @@ export default function Input({
         <InputCard
           id={0}
           activeId={activeId}
-          onClick={collapse}
+          changeActiveId={changeActiveId}
+          toggleActive={toggleActive}
           title={"General Information"}
           addCard={addCard}
+          deleteCard={deleteResumeData}
         >
           <General key={0} onChange={onChange} resumeData={general} />
         </InputCard>
         <InputCard
           id={1}
           activeId={activeId}
-          onClick={collapse}
+          changeActiveId={changeActiveId}
+          toggleActive={toggleActive}
           title={"Education"}
           addCard={addCard}
+          deleteCard={deleteResumeData}
         >
           {education.map((item, index) => (
             <Education
               key={index}
-              id={index}
+              id={item.id}
               onChange={onChange}
               resumeData={item}
             />
@@ -52,14 +58,16 @@ export default function Input({
         <InputCard
           id={2}
           activeId={activeId}
-          onClick={collapse}
+          changeActiveId={changeActiveId}
+          toggleActive={toggleActive}
           title={"Experience"}
           addCard={addCard}
+          deleteCard={deleteResumeData}
         >
           {experience.map((item, index) => (
             <Experience
               key={index}
-              id={index}
+              id={item.id}
               onChange={onChange}
               resumeData={item}
             />
@@ -68,14 +76,16 @@ export default function Input({
         <InputCard
           id={3}
           activeId={activeId}
-          onClick={collapse}
+          changeActiveId={changeActiveId}
+          toggleActive={toggleActive}
           title={"Projects"}
           addCard={addCard}
+          deleteCard={deleteResumeData}
         >
           {project.map((item, index) => (
             <Project
               key={index}
-              id={index}
+              id={item.id}
               onChange={onChange}
               resumeData={item}
             />
@@ -86,45 +96,64 @@ export default function Input({
   );
 }
 
-function InputCard({ children, id, activeId, onClick, title, addCard }) {
+function InputCard({
+  children,
+  id,
+  activeId,
+  changeActiveId,
+  toggleActive,
+  title,
+  addCard,
+  deleteCard,
+}) {
   const [isSaved, setSaved] = useState(false);
 
   const filteredChildren = (
     Array.isArray(children) ? children : [children]
   ).filter((child) => child.props.resumeData.active);
 
-  function changeStatus(e) {
+  function changeStatus() {
     setSaved(!isSaved);
   }
-
   return (
     <div className="inputCard">
       <h2>{title}</h2>
       {isSaved &&
         id === activeId &&
-        /*         <div className="savedCard">
-          <SavedCard
-            formData={formData}
-            changeStatus={changeStatus}
-          ></SavedCard>
-        </div> */
         (Array.isArray(children) ? children : [children]).map((child, i) => (
           <div key={i} className="savedCard">
             <p>{Object.entries(child.props.resumeData)[0][1]}</p>
-            <button onClick={changeStatus}>Edit</button>
+            <button
+              onClick={() => {
+                changeStatus();
+                toggleActive(title.toLowerCase(), child.props.id);
+              }}
+            >
+              Edit
+            </button>
           </div>
         ))}
 
       {!isSaved && id === activeId && (
         <>
           <div>{filteredChildren}</div>
-          <button type="button" onClick={changeStatus}>
-            Save
-          </button>
+          <div className="cardButtons">
+            <button type="button" onClick={changeStatus}>
+              Save
+            </button>
+            <button
+              onClick={() => {
+                deleteCard(title.toLowerCase(), filteredChildren[0].props.id);
+                changeStatus();
+              }}
+            >
+              Cancel
+            </button>
+          </div>
         </>
       )}
 
-      <button className="collapse" onClick={() => onClick(id)}>
+      <button className="collapse" onClick={() => changeActiveId(id)}>
         <img
           className={id === activeId ? "active" : "inactive"}
           src={toggleCollapse}
@@ -133,6 +162,7 @@ function InputCard({ children, id, activeId, onClick, title, addCard }) {
       </button>
       {title !== "General Information" && isSaved && id === activeId && (
         <button
+          className="cardButtons"
           onClick={() => {
             addCard(title);
             changeStatus();
@@ -187,7 +217,7 @@ function General({ onChange, resumeData }) {
           id="home"
           name="home"
           onChange={onChange}
-          value={resumeData.location}
+          value={resumeData.home}
         />
         <label htmlFor="linkedin">Linkedin: </label>
         <input
@@ -210,7 +240,7 @@ function Education({ id, onChange, resumeData }) {
         type="text"
         id={useId()}
         name="school"
-        onChange={(e) => onChange(e, id)}
+        onChange={(e) => onChange(e, "education", id)}
         value={resumeData.school}
       />
       <label htmlFor={useId()}>Location</label>
@@ -218,7 +248,7 @@ function Education({ id, onChange, resumeData }) {
         type="text"
         id={useId()}
         name="location"
-        onChange={(e) => onChange(e, id)}
+        onChange={(e) => onChange(e, "education", id)}
         value={resumeData.location}
       />
       <label htmlFor={useId()}>Degree</label>
@@ -226,7 +256,7 @@ function Education({ id, onChange, resumeData }) {
         type="text"
         id={useId()}
         name="degree"
-        onChange={(e) => onChange(e, id)}
+        onChange={(e) => onChange(e, "education", id)}
         value={resumeData.degree}
       />
       <label htmlFor={useId()}>Start Date</label>
@@ -234,7 +264,7 @@ function Education({ id, onChange, resumeData }) {
         type="date"
         id={useId()}
         name="startDate"
-        onChange={(e) => onChange(e, id)}
+        onChange={(e) => onChange(e, "education", id)}
         value={resumeData.startDate}
       />
       <label htmlFor={useId()}>End Date</label>
@@ -242,7 +272,7 @@ function Education({ id, onChange, resumeData }) {
         type="date"
         id={useId()}
         name="endDate"
-        onChange={(e) => onChange(e, id)}
+        onChange={(e) => onChange(e, "education", id)}
         value={resumeData.endDate}
       />
     </form>
@@ -257,7 +287,7 @@ function Experience({ id, onChange, resumeData }) {
         type="text"
         id={useId()}
         name="company"
-        onChange={(e) => onChange(e, id)}
+        onChange={(e) => onChange(e, "experience", id)}
         value={resumeData.company}
       />
       <label htmlFor={useId()}>Location</label>
@@ -265,7 +295,7 @@ function Experience({ id, onChange, resumeData }) {
         type="text"
         id={useId()}
         name="companyLocation"
-        onChange={(e) => onChange(e, id)}
+        onChange={(e) => onChange(e, "experience", id)}
         value={resumeData.companyLocation}
       />
       <label htmlFor={useId()}>Position</label>
@@ -273,14 +303,14 @@ function Experience({ id, onChange, resumeData }) {
         type="text"
         id={useId()}
         name="position"
-        onChange={(e) => onChange(e, id)}
+        onChange={(e) => onChange(e, "experience", id)}
         value={resumeData.position}
       />
       <label htmlFor={useId()}>Bullets</label>
       <textarea
         id={useId()}
         name="bullets"
-        onChange={(e) => onChange(e, id)}
+        onChange={(e) => onChange(e, "experience", id)}
         value={resumeData.bullets}
       />
       <label htmlFor={useId()}>Start Date</label>
@@ -288,7 +318,7 @@ function Experience({ id, onChange, resumeData }) {
         type="date"
         id={useId()}
         name="workStartDate"
-        onChange={(e) => onChange(e, id)}
+        onChange={(e) => onChange(e, "experience", id)}
         value={resumeData.workStartDate}
       />
       <label htmlFor={useId()}>End Date</label>
@@ -296,7 +326,7 @@ function Experience({ id, onChange, resumeData }) {
         type="date"
         id={useId()}
         name="workEndDate"
-        onChange={(e) => onChange(e, id)}
+        onChange={(e) => onChange(e, "experience", id)}
         value={resumeData.workEndDate}
       />
     </form>
@@ -311,14 +341,14 @@ function Project({ id, onChange, resumeData }) {
         type="text"
         id={useId()}
         name="project"
-        onChange={(e) => onChange(e, id)}
+        onChange={(e) => onChange(e, "project", id)}
         value={resumeData.project}
       />
       <label htmlFor={useId()}>Bullets</label>
       <textarea
         id={useId()}
         name="description"
-        onChange={(e) => onChange(e, id)}
+        onChange={(e) => onChange(e, "project", id)}
         value={resumeData.description}
       />
     </form>

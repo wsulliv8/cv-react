@@ -60,8 +60,11 @@
   }
 }
 
-.inputCard > button {
+.inputCard .cardButtons {
   position: absolute;
+  display: flex;
+  gap: 5px;
+  width: max-content;
   bottom: 10px;
   right: 10px;
 }
