@@ -8,18 +8,34 @@ export default function Resume({ general, education, experience, project }) {
       <div className="resume">
         <div className="header flex-contents">
           <h1>{general.name}</h1>
-          <h2>{general.title}</h2>
+          <h3>{general.title}</h3>
         </div>
         <div className="sidebar flex-contents">
-          <h3>Contact</h3>
+          <h2>Contact</h2>
           <section>
-            <a href="">{general.email}</a>
-            <p>{general.phone}</p>
-            <p>{general.home}</p>
-            <a href={general.linkedin}>Linkedin</a>
+            <span>
+              <a href="">{general.email}</a>{" "}
+              <span className="material-symbols-outlined resumeIcon">mail</span>
+            </span>
+            <span>
+              <p>{general.phone}</p>
+              <span className="material-symbols-outlined resumeIcon">
+                phone
+              </span>
+            </span>
+            <span>
+              <p>{general.home}</p>
+              <span className="material-symbols-outlined resumeIcon">
+                home_pin
+              </span>
+            </span>
+            <span>
+              <a href={general.linkedin}>Linkedin</a>
+              <span className="material-symbols-outlined resumeIcon">link</span>
+            </span>
             <section className="contact"></section>
           </section>
-          <h3>Education</h3>
+          <h2>Education</h2>
           {education.map((item, index) => {
             return (
               <EducationSection
@@ -28,8 +44,6 @@ export default function Resume({ general, education, experience, project }) {
               ></EducationSection>
             );
           })}
-          <h3>Skills</h3>
-          <section className="skills"></section>
         </div>
         <div className="resume-body flex-contents">
           <h2>Work Experience</h2>
@@ -52,6 +66,14 @@ export default function Resume({ general, education, experience, project }) {
 }
 
 function EducationSection({ education }) {
+  const formatDate = (date) => {
+    const [year, month] = date.split("-");
+    return new Date(year, month - 1).toLocaleString("en-US", {
+      month: "short",
+      year: "numeric",
+    });
+  };
+
   return (
     <section className="education">
       <h4>{education.school}</h4>
@@ -62,16 +84,23 @@ function EducationSection({ education }) {
         <i>{education.degree}</i>
       </p>
       <p>
-        <i>{education.startDate}</i>
-      </p>
-      <p>
-        <i>{education.endDate}</i>
+        <i>
+          {formatDate(education.startDate)} - {formatDate(education.endDate)}
+        </i>
       </p>
     </section>
   );
 }
 
 function ExperienceSection({ experience }) {
+  const formatDate = (date) => {
+    const [year, month] = date.split("-");
+    return new Date(year, month - 1).toLocaleString("en-US", {
+      month: "short",
+      year: "numeric",
+    });
+  };
+
   function createBullets(str) {
     return str ? str.split("\n") : [];
   }
@@ -83,9 +112,14 @@ function ExperienceSection({ experience }) {
         <h5>{experience.position}</h5>
       </div>
       <div>
-        <h5>{experience.companyLocation}</h5>
+        <i>
+          <h5>{experience.companyLocation}</h5>
+        </i>
         <h5>
-          {experience.workStartDate} - {experience.workEndDate}
+          <i>
+            {formatDate(experience.workStartDate)} -{" "}
+            {formatDate(experience.workEndDate)}
+          </i>
         </h5>
       </div>
       <ul>
@@ -103,7 +137,7 @@ function ProjectSection({ project }) {
   }
 
   return (
-    <section className="work-experience">
+    <section className="project">
       <div>
         <h3>{project.project}</h3>
       </div>

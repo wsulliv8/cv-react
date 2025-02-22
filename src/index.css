@@ -85,6 +85,13 @@ label {
   --red-color: #c44e52;
   --shadow-color: #ced4da;
   --gray-color: #495057;
+
+  --resume-background-color: #f8f1f1;
+  --resume-accent-color: #34495e;
+  --resume-header-color: #2c3e50;
+  --resume-link-color: white;
+  --resume-mainText-color: #333333;
+  --resume-sideText-color: #ffffff;
 }
 
 .material-symbols-outlined {

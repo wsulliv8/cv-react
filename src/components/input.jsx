@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useState, useId } from "react";
+import { useState, useId, useEffect } from "react";
 import toggleCollapse from "../assets/triangle.svg";
 import "./input.css";
+import { colorPalettes } from "./color-palettes";
 
 export default function Input({
   addResumeData,
@@ -14,6 +15,7 @@ export default function Input({
   project,
 }) {
   const [activeId, setActiveId] = useState(0);
+  const [showCustom, setShowCustom] = useState(0);
 
   function changeActiveId(id) {
     if (id === activeId) setActiveId(null);
@@ -25,73 +27,102 @@ export default function Input({
   }
   return (
     <div className="input-wrapper">
-      <div className="input">
-        <InputCard
-          id={0}
-          activeId={activeId}
-          changeActiveId={changeActiveId}
-          toggleActive={toggleActive}
-          title={"General Information"}
-          addCard={addCard}
-          deleteCard={deleteResumeData}
+      <div className="inputCard selectButton">
+        <button
+          className={!showCustom ? "active" : ""}
+          onClick={() => {
+            if (showCustom) setShowCustom(!showCustom);
+          }}
         >
-          <General key={0} onChange={onChange} resumeData={general} />
-        </InputCard>
-        <InputCard
-          id={1}
-          activeId={activeId}
-          changeActiveId={changeActiveId}
-          toggleActive={toggleActive}
-          title={"Education"}
-          addCard={addCard}
-          deleteCard={deleteResumeData}
+          <span className="material-symbols-outlined iconButton large">
+            post_add
+          </span>
+        </button>
+        <button
+          className={showCustom ? "active" : ""}
+          onClick={() => {
+            if (!showCustom) setShowCustom(!showCustom);
+          }}
         >
-          {education.map((item, index) => (
-            <Education
-              key={index}
-              id={item.id}
-              onChange={onChange}
-              resumeData={item}
-            />
-          ))}
-        </InputCard>
-        <InputCard
-          id={2}
-          activeId={activeId}
-          changeActiveId={changeActiveId}
-          toggleActive={toggleActive}
-          title={"Experience"}
-          addCard={addCard}
-          deleteCard={deleteResumeData}
-        >
-          {experience.map((item, index) => (
-            <Experience
-              key={index}
-              id={item.id}
-              onChange={onChange}
-              resumeData={item}
-            />
-          ))}
-        </InputCard>
-        <InputCard
-          id={3}
-          activeId={activeId}
-          changeActiveId={changeActiveId}
-          toggleActive={toggleActive}
-          title={"Projects"}
-          addCard={addCard}
-          deleteCard={deleteResumeData}
-        >
-          {project.map((item, index) => (
-            <Project
-              key={index}
-              id={item.id}
-              onChange={onChange}
-              resumeData={item}
-            />
-          ))}
-        </InputCard>
+          <span className="material-symbols-outlined iconButton large">
+            design_services
+          </span>
+        </button>
       </div>
+      {showCustom && (
+        <div className="input customize">
+          <CustomizeBar />
+        </div>
+      )}
+      {!showCustom && (
+        <div className="input">
+          <InputCard
+            id={0}
+            activeId={activeId}
+            changeActiveId={changeActiveId}
+            toggleActive={toggleActive}
+            title={"General Information"}
+            addCard={addCard}
+            deleteCard={deleteResumeData}
+          >
+            <General key={0} onChange={onChange} resumeData={general} />
+          </InputCard>
+          <InputCard
+            id={1}
+            activeId={activeId}
+            changeActiveId={changeActiveId}
+            toggleActive={toggleActive}
+            title={"Education"}
+            addCard={addCard}
+            deleteCard={deleteResumeData}
+          >
+            {education.map((item, index) => (
+              <Education
+                key={index}
+                id={item.id}
+                onChange={onChange}
+                resumeData={item}
+              />
+            ))}
+          </InputCard>
+          <InputCard
+            id={2}
+            activeId={activeId}
+            changeActiveId={changeActiveId}
+            toggleActive={toggleActive}
+            title={"Experience"}
+            addCard={addCard}
+            deleteCard={deleteResumeData}
+          >
+            {experience.map((item, index) => (
+              <Experience
+                key={index}
+                id={item.id}
+                onChange={onChange}
+                resumeData={item}
+              />
+            ))}
+          </InputCard>
+          <InputCard
+            id={3}
+            activeId={activeId}
+            changeActiveId={changeActiveId}
+            toggleActive={toggleActive}
+            title={"Projects"}
+            addCard={addCard}
+            deleteCard={deleteResumeData}
+          >
+            {project.map((item, index) => (
+              <Project
+                key={index}
+                id={item.id}
+                onChange={onChange}
+                resumeData={item}
+              />
+            ))}
+          </InputCard>
+        </div>
+      )}
     </div>
   );
 }
@@ -119,7 +150,7 @@ function InputCard({
   return (
     <div className="inputCard">
       <h2 className="cardHeader">
-        {title}{" "}
+        {title}
         <span
           className={`material-symbols-outlined iconButton expand ${
             id === activeId ? "active" : "inactive"
@@ -206,9 +237,91 @@ function InputCard({
   );
 }
 
+function CustomizeBar() {
+  const [theme, setTheme] = useState("classic");
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty(
+      "--resume-background-color",
+      colorPalettes[theme].background
+    );
+    root.style.setProperty(
+      "--resume-accent-color",
+      colorPalettes[theme].accent
+    );
+    root.style.setProperty(
+      "--resume-header-color",
+      colorPalettes[theme].header
+    );
+    root.style.setProperty("--resume-link-color", colorPalettes[theme].link);
+    root.style.setProperty(
+      "--resume-mainText-color",
+      colorPalettes[theme].mainText
+    );
+    root.style.setProperty(
+      "--resume-sideText-color",
+      colorPalettes[theme].sideText
+    );
+  }, [theme]);
+
+  return (
+    <div className="inputCard">
+      <h2 className="cardHeader">Customize</h2>
+      <form>
+        <h3>Color Theme</h3>
+        <div className="theme-option">
+          <input
+            type="radio"
+            id="classic"
+            name="themeSelect"
+            value="classic"
+            onChange={(e) => setTheme(e.target.value)}
+            checked={theme === "classic"}
+          />
+          <label htmlFor="classic">Classic</label>
+        </div>
+        <div className="theme-option">
+          <input
+            type="radio"
+            id="modern"
+            name="themeSelect"
+            value="modern"
+            onChange={(e) => setTheme(e.target.value)}
+            checked={theme === "modern"}
+          />
+          <label htmlFor="modern">Modern</label>
+        </div>
+        <div className="theme-option">
+          <input
+            type="radio"
+            id="creative"
+            name="themeSelect"
+            value="creative"
+            onChange={(e) => setTheme(e.target.value)}
+            checked={theme === "creative"}
+          />
+          <label htmlFor="creative">Creative</label>
+        </div>
+        <div className="theme-option">
+          <input
+            type="radio"
+            id="light"
+            name="themeSelect"
+            value="light"
+            onChange={(e) => setTheme(e.target.value)}
+            checked={theme === "light"}
+          />
+          <label htmlFor="light">Light</label>
+        </div>
+      </form>
+    </div>
+  );
+}
+
 function General({ onChange, resumeData }) {
   return (
-    <form action="">
+    <form className="infoForm" action="">
       <fieldset>
         <label htmlFor="name">Name: </label>
         <input
@@ -265,7 +378,7 @@ function General({ onChange, resumeData }) {
 
 function Education({ id, onChange, resumeData }) {
   return (
-    <form action="">
+    <form className="infoForm" action="">
       <label htmlFor={useId()}>School</label>
       <input
         type="text"
@@ -293,7 +406,7 @@ function Education({ id, onChange, resumeData }) {
       <label htmlFor={useId()}>Start Date</label>
       <input
         className="date"
-        type="date"
+        type="month"
         id={useId()}
         name="startDate"
         onChange={(e) => onChange(e, "education", id)}
@@ -302,7 +415,7 @@ function Education({ id, onChange, resumeData }) {
       <label htmlFor={useId()}>End Date</label>
       <input
         className="date"
-        type="date"
+        type="month"
         id={useId()}
         name="endDate"
         onChange={(e) => onChange(e, "education", id)}
@@ -314,7 +427,7 @@ function Education({ id, onChange, resumeData }) {
 
 function Experience({ id, onChange, resumeData }) {
   return (
-    <form action="">
+    <form className="infoForm" action="">
       <label htmlFor={useId()}>Company</label>
       <input
         type="text"
@@ -348,7 +461,7 @@ function Experience({ id, onChange, resumeData }) {
       />
       <label htmlFor={useId()}>Start Date</label>
       <input
-        type="date"
+        type="month"
         id={useId()}
         name="workStartDate"
         onChange={(e) => onChange(e, "experience", id)}
@@ -356,7 +469,7 @@ function Experience({ id, onChange, resumeData }) {
       />
       <label htmlFor={useId()}>End Date</label>
       <input
-        type="date"
+        type="month"
         id={useId()}
         name="workEndDate"
         onChange={(e) => onChange(e, "experience", id)}
@@ -368,7 +481,7 @@ function Experience({ id, onChange, resumeData }) {
 
 function Project({ id, onChange, resumeData }) {
   return (
-    <form action="">
+    <form className="infoForm" action="">
       <label htmlFor={useId()}>Project</label>
       <input
         type="text"

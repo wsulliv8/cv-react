@@ -14,8 +14,8 @@ export const educationData = [
     school: "University of Notre Dame",
     location: "South Bend, Indiana",
     degree: "BS in Computer Science",
-    startDate: "08/2016",
-    endDate: "05/2020",
+    startDate: "2016-08",
+    endDate: "2020-05",
     active: true,
     id: 0,
   },
@@ -30,8 +30,8 @@ export const experienceData = [
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
               enim ad minim veniam, quis nostrud exercitation ullamco laboris
               nisi ut aliquip ex ea commodo consequat.`,
-    workStartDate: "08/2016",
-    workEndDate: "05/2020",
+    workStartDate: "2020-05",
+    workEndDate: "2025-02",
     active: true,
     id: 0,
   },
