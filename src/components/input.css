@@ -9,6 +9,13 @@
   height: 100vh;
 }
 
+@media (max-width: 768px) {
+  .input-wrapper {
+    align-self: center;
+    flex-direction: column;
+  }
+}
+
 .input {
   display: flex;
   flex-direction: column;

@@ -9,6 +9,12 @@
   font-size: 0.8rem;
 }
 
+@media (max-width: 768px) {
+  .resume-wrapper {
+    align-self: center;
+  }
+}
+
 .resume {
   display: grid;
   grid-template: 1fr 7fr / 1fr 2.5fr;
