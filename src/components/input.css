@@ -1,3 +1,5 @@
+@import url(../index.css);
+
 .input-wrapper {
   display: flex;
   justify-content: center;
@@ -10,7 +12,7 @@
   flex-direction: column;
   justify-content: flex-start;
   gap: 30px;
-  width: 500px;
+  width: 350px;
   height: 97%;
 }
 
@@ -19,37 +21,81 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
-  height: 40px;
-  border: black solid;
+  position: relative;
+  padding: 10px 0;
+  min-height: 30px;
+  background-color: var(--background-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-color) 0px 1px 4px;
+}
+
+.savedCard > p {
+  max-width: 60%;
+  text-align: center;
+}
+
+.savedCard > div {
+  position: absolute;
+  display: flex;
+  gap: 2px;
+  right: 5px;
 }
 
 .inputCard {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   position: relative;
-  height: max-content;
-  padding: 10px 0 40px 0;
-  border: black solid;
-  background-color: white;
+  padding: 20px;
+  height: max(100px, min-content);
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-color) 0px 1px 4px;
 }
 
-.collapse {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  width: max-content;
-  background-color: transparent;
+.cardHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.actionButton {
+  background-color: var(--accent-color);
+  color: var(--secondary-color);
+  padding: 6px 12px;
   border: none;
-  cursor: pointer;
-  transform: translateX(-50%);
+  border-radius: 12px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  &:active {
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3);
+  }
+
+  &.cancel {
+    background-color: var(--gray-color);
+  }
 }
 
-.collapse > img {
-  background: none;
-  fill: none;
-  width: 20px;
+.iconButton {
+  cursor: pointer;
+  color: var(--accent-color);
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+
+  &.expand {
+    position: absolute;
+    right: 10px;
+  }
+
+  &.delete {
+    color: var(--red-color);
+  }
 
   &.active {
     transform: rotate(0);
@@ -61,21 +107,19 @@
 }
 
 .inputCard .cardButtons {
-  position: absolute;
   display: flex;
-  gap: 5px;
+  gap: 10px;
   width: max-content;
-  bottom: 10px;
-  right: 10px;
 }
 
 .inputCard > div {
-  width: 70%;
+  width: 90%;
 }
 
 form {
   display: flex;
   flex-direction: column;
+  gap: 2px;
   width: 100%;
 }
 
@@ -83,11 +127,26 @@ fieldset {
   display: contents;
 }
 
-input {
-  margin-bottom: 5px;
+input,
+textarea {
+  margin-bottom: 3px;
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: var(--background-color);
+
+  &:focus {
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    border-color: #0967cc;
+    outline: none;
+  }
 }
 
 textarea {
   height: 100px;
   resize: none;
+}
+
+label {
+  font-weight: bold;
 }

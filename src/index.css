@@ -11,6 +11,9 @@
 body {
   line-height: 1.2;
   -webkit-font-smoothing: antialiased;
+  font-family: "Noto Sans", sans-serif;
+  color: var(--text-color);
+  background-color: var(--background-color);
 }
 
 img,
@@ -56,8 +59,10 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+label {
   text-wrap: balance;
+  color: var(--primary-color);
 }
 
 #root,
@@ -70,4 +75,18 @@ h6 {
   --header-one: calc(1.4 * var(--font-size));
   --header-two: calc(1.2 * var(--font-size));
   --header-three: calc(1.1 * var(--font-size));
+  --primary-color: #343a40;
+  --secondary-color: #fdf6ec;
+  --accent-color: #4c76b5;
+  /*   --background-color: #333333;
+ */
+  --text-color: #ffffff;
+  --background-color: #e9ecef;
+  --red-color: #c44e52;
+  --shadow-color: #ced4da;
+  --gray-color: #495057;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 }

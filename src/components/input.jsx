@@ -107,6 +107,7 @@ function InputCard({
   deleteCard,
 }) {
   const [isSaved, setSaved] = useState(false);
+  const [isNew, setNew] = useState(false);
 
   const filteredChildren = (
     Array.isArray(children) ? children : [children]
@@ -117,20 +118,41 @@ function InputCard({
   }
   return (
     <div className="inputCard">
-      <h2>{title}</h2>
+      <h2 className="cardHeader">
+        {title}{" "}
+        <span
+          className={`material-symbols-outlined iconButton expand ${
+            id === activeId ? "active" : "inactive"
+          }`}
+          onClick={() => changeActiveId(id)}
+        >
+          keyboard_arrow_up
+        </span>
+      </h2>
       {isSaved &&
         id === activeId &&
         (Array.isArray(children) ? children : [children]).map((child, i) => (
           <div key={i} className="savedCard">
             <p>{Object.entries(child.props.resumeData)[0][1]}</p>
-            <button
-              onClick={() => {
-                changeStatus();
-                toggleActive(title.toLowerCase(), child.props.id);
-              }}
-            >
-              Edit
-            </button>
+            <div>
+              <span
+                className="material-symbols-outlined iconButton"
+                onClick={() => {
+                  changeStatus();
+                  toggleActive(title.toLowerCase(), child.props.id);
+                }}
+              >
+                edit
+              </span>
+              <span
+                className="material-symbols-outlined iconButton delete"
+                onClick={() => {
+                  deleteCard(title.toLowerCase(), child.props.id);
+                }}
+              >
+                delete
+              </span>
+            </div>
           </div>
         ))}
 
@@ -138,12 +160,28 @@ function InputCard({
         <>
           <div>{filteredChildren}</div>
           <div className="cardButtons">
-            <button type="button" onClick={changeStatus}>
+            <button
+              type="button"
+              className="actionButton"
+              onClick={() => {
+                changeStatus();
+                setNew(false);
+              }}
+            >
               Save
             </button>
             <button
+              className="actionButton cancel"
               onClick={() => {
-                deleteCard(title.toLowerCase(), filteredChildren[0].props.id);
+                if (
+                  isNew ||
+                  Object.entries(filteredChildren[0].props.resumeData)
+                    .filter(([key]) => !["id", "active"].includes(key))
+                    .every(([_, value]) => !value)
+                ) {
+                  deleteCard(title.toLowerCase(), filteredChildren[0].props.id);
+                }
+                setNew(false);
                 changeStatus();
               }}
             >
@@ -152,20 +190,13 @@ function InputCard({
           </div>
         </>
       )}
-
-      <button className="collapse" onClick={() => changeActiveId(id)}>
-        <img
-          className={id === activeId ? "active" : "inactive"}
-          src={toggleCollapse}
-          alt="triangle"
-        />
-      </button>
       {title !== "General Information" && isSaved && id === activeId && (
         <button
-          className="cardButtons"
+          className="cardButtons actionButton"
           onClick={() => {
             addCard(title);
             changeStatus();
+            setNew(true);
           }}
         >
           Add {title}
@@ -261,6 +292,7 @@ function Education({ id, onChange, resumeData }) {
       />
       <label htmlFor={useId()}>Start Date</label>
       <input
+        className="date"
         type="date"
         id={useId()}
         name="startDate"
@@ -269,6 +301,7 @@ function Education({ id, onChange, resumeData }) {
       />
       <label htmlFor={useId()}>End Date</label>
       <input
+        className="date"
         type="date"
         id={useId()}
         name="endDate"

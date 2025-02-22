@@ -44,6 +44,7 @@ export default function App() {
           ...templates.education,
           id:
             education.length === 0 ? 0 : education[education.length - 1].id + 1,
+          active: true,
         },
       ]);
     } else if (type === "experience") {
@@ -55,6 +56,7 @@ export default function App() {
             experience.length === 0
               ? 0
               : experience[experience.length - 1].id + 1,
+          active: true,
         },
       ]);
     } else {
@@ -63,6 +65,7 @@ export default function App() {
         {
           ...templates.project,
           id: project.length === 0 ? 0 : project[project.length - 1].id + 1,
+          active: true,
         },
       ]);
     }
@@ -78,8 +81,9 @@ export default function App() {
           experience.filter((item) => item.id !== id)
         );
         break;
-      default:
+      case "project":
         setProject((project) => project.filter((item) => item.id !== id));
+        break;
     }
   }
 
