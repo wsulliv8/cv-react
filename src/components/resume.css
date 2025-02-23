@@ -12,6 +12,7 @@
 @media (max-width: 768px) {
   .resume-wrapper {
     align-self: center;
+    width: max(100%, 620px);
   }
 }
 

@@ -72,6 +72,14 @@
     gap: 5px;
     flex-direction: column;
     padding: 10px;
+
+    @media (max-width: 768px) {
+      flex-direction: row;
+      width: 150px;
+      height: auto;
+      align-self: center;
+      margin: 0;
+    }
   }
 
   &.selectButton > button {
